@@ -1,0 +1,107 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* The scoreboard */
+.scoreBoard{
+  align-self: center;
+  border: solid white;
+  width: 10%;           /* mediaQ changes */
+  height: 20%;
+  border-radius: 50%;
+  background-color: black;
+  z-index: 2;
+  position: absolute;
+  color: white;
+  text-align: center;
+  line-height: 160px;     /* mediaQ changes */
+}
+
+/* All Colored Buttons */
+.button{
+  height: 300px;          /* mediaQ changes */
+  width: 300px;           /* mediaQ changes */
+  border: 2px solid;
+  transition-duration: 0.5s;
+}
+
+/* The individual buttons */
+.red{
+  border-top-left-radius: 100%; /* Thanks Taka for telling me to try googling border-raidus for better understanding*/
+  border-color: red;
+}
+.redbg{
+  background-color: red;
+}
+
+.green{
+  border-bottom-left-radius: 100%;
+  border-color: green;
+}
+.greenbg{
+  background-color: green;
+}
+
+.yellow{
+  border-bottom-right-radius: 100%;
+  border-color: yellow;
+}
+.yellowbg{
+  background-color: yellow;
+}
+
+.blue{
+  border-top-right-radius: 100%;
+  border-color: blue;
+}
+.bluebg{
+  background-color: blue;
+}
+
+.flexer{
+  display: flex;
+  width: 610px;         /* mediaQ changes */
+  height: 610px;        /* mediaQ changes */
+  flex-wrap: wrap;
+  margin: 0 auto;
+  justify-content: center;
+}
+
+body{
+  background-image: url("https://i.imgur.com/UGBGeGv.png");
+}
