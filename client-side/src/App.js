@@ -19,7 +19,7 @@ function App() {
   const [glowAllActive, setGlowAllActive] = useState(false);
 
   // ORDERED PATTERNS
-  const [computerPattern, setComputerPattern] = useState([]);
+  const [computerPattern, setComputerPattern] = useState([randomColor()]);
   const [playerPattern, setPlayerPattern] = useState([]);
 
   // for Computer pattern making
@@ -30,13 +30,17 @@ function App() {
     return colors[randomIndex]
   }
 
-  function increaseComputerPattern(){
+  function increaseComputerPattern() {
     let newColor = randomColor();
-
-    setComputerPattern((prevState) => {
-      return [...prevState, newColor]
-    })
-  }
+    const lastColor = computerPattern[computerPattern.length - 1];
+  
+    // Ensure newColor is not the same as the last color in the pattern
+    while (newColor === lastColor) {
+      newColor = randomColor();
+    }
+  
+    setComputerPattern(prevState => [...prevState, newColor]);
+  }  
 
   // Flip who's turn it is
   function switchTurns(){
@@ -51,49 +55,36 @@ function App() {
 
   function computerTakesTurn() {
     increaseComputerPattern();
-    setTimeout(() => glowAll(), 500); // Slight delay before starting
-    // setTimeout(() => beginGlowSequence(), 1750);
+    glowAll()
   }
 
   function beginGlowSequence(){
-    setCurrentGlowIndex(0)
+    for(let i = 0; i < computerPattern.length; i++){
+      setTimeout(() => {
+        setCurrentGlowIndex(i)
+      }, 1500 + (1000 * i))
+    }
+    setTimeout(() => {
+      setCurrentGlowIndex(-1);
+    }, 1500 + (1000 * computerPattern.length));
   }
   
   function glowAll() {
     setGlowAllActive(true);
     setTimeout(() => {
       setGlowAllActive(false);
+      beginGlowSequence()
     }, 1000); // Match the glow duration in CompButton
   }  
-
-  // HANDLE THE GLOW PATTERN
-  useEffect(() => {
-    if (!glowAllActive && currentGlowIndex >= 0 && currentGlowIndex < computerPattern.length) {
-      // Set a timeout to advance the glow sequence
-      const timer = setTimeout(() => {
-        const nextIndex = currentGlowIndex + 1;
-        // if the next index isn't the end of the pattern...
-        if (nextIndex < computerPattern.length) {
-          // ...move forward
-          setCurrentGlowIndex(nextIndex);
-        } else {
-          // Sequence complete, prepare for the next step
-          setTimeout(increaseComputerPattern, 500); // Add a new color after a delay
-          setCurrentGlowIndex(-1); // Reset the sequence
-        }
-      }, 1000);
   
-      return () => clearTimeout(timer); // Cleanup
-    }
-  }, [currentGlowIndex]);
-  
-
   // DECIDE WHO TAKES THEIR TURN
   useEffect(() => {
     if(isComputerTurn){
       computerTakesTurn()
     } else if(isPlayerTurn){
       // do player logic later
+      // check the comp status during player's turn
+      console.log(computerPattern)
     }
   }, [isPlayerTurn])
 
