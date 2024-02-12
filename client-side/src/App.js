@@ -17,12 +17,31 @@ function App() {
   const [computerPattern, setComputerPattern] = useState([randomColor()]);
   const [playerPattern, setPlayerPattern] = useState([]);
 
-  // for Computer pattern making
-  function randomColor(){
-    let randomIndex = Math.floor(Math.random()*4)
-    let colors = ["red", "blue", "green", "yellow"]
+  // Flip who's turn it is
+  function switchTurns(){
+    setIsPlayerTurn((prevState) => {
+      return !prevState;
+    })
 
-    return colors[randomIndex]
+    setIsComputerTurn((prevState) => {
+      return !prevState;
+    })
+  }
+
+  // DECIDE WHO TAKES THEIR TURN
+  useEffect(() => {
+    if(isComputerTurn){
+      computerTakesTurn()
+    } else if(isPlayerTurn){
+      // do player logic later
+      // check the comp status during player's turn
+      console.log(computerPattern)
+    }
+  }, [isPlayerTurn])
+
+  function computerTakesTurn() {
+    increaseComputerPattern();
+    glowAll()
   }
 
   function increaseComputerPattern() {
@@ -37,21 +56,21 @@ function App() {
     setComputerPattern(prevState => [...prevState, newColor]);
   }  
 
-  // Flip who's turn it is
-  function switchTurns(){
-    setIsPlayerTurn((prevState) => {
-      return !prevState;
-    })
+  // for Computer pattern making
+  function randomColor(){
+    let randomIndex = Math.floor(Math.random()*4)
+    let colors = ["red", "blue", "green", "yellow"]
 
-    setIsComputerTurn((prevState) => {
-      return !prevState;
-    })
+    return colors[randomIndex]
   }
 
-  function computerTakesTurn() {
-    increaseComputerPattern();
-    glowAll()
-  }
+  function glowAll() {
+    setGlowAllActive(true);
+    setTimeout(() => {
+      setGlowAllActive(false);
+      beginGlowSequence()
+    }, 1000); // Match the glow duration in CompButton
+  } 
 
   function beginGlowSequence(){
     for(let i = 0; i < computerPattern.length; i++){
@@ -61,27 +80,9 @@ function App() {
     }
     setTimeout(() => {
       setCurrentGlowIndex(-1);
+      switchTurns() // Player's turn
     }, 1500 + (1000 * computerPattern.length));
   }
-  
-  function glowAll() {
-    setGlowAllActive(true);
-    setTimeout(() => {
-      setGlowAllActive(false);
-      beginGlowSequence()
-    }, 1000); // Match the glow duration in CompButton
-  }  
-  
-  // DECIDE WHO TAKES THEIR TURN
-  useEffect(() => {
-    if(isComputerTurn){
-      computerTakesTurn()
-    } else if(isPlayerTurn){
-      // do player logic later
-      // check the comp status during player's turn
-      console.log(computerPattern)
-    }
-  }, [isPlayerTurn])
 
   function handlePlayerClick(color) {
     // Update playerPattern
@@ -119,11 +120,8 @@ function App() {
         setPlayerPattern([])
       }
     }
-
-    
   }, [playerPattern])
   
-
   return (
     <div className="flexer">
       {isPlayerTurn ?
