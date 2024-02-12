@@ -39,11 +39,14 @@ function App() {
       computerTakesTurn()
     } else if(isPlayerTurn){
       // check the comp status during player's turn
-      console.log(computerPattern)
+      // console.log(computerPattern)
     }
   }, [isPlayerTurn])
 
   function computerTakesTurn() {
+    if(score === 0){
+      setScore(score+1)
+    }
     increaseComputerPattern();
     glowAll()
   }
@@ -98,10 +101,10 @@ function App() {
 
   // Always check if the player pattern is correct
   useEffect(() => {
-    console.log({
-      playerPattern,
-      computerPattern
-    })
+    // console.log({
+    //   playerPattern,
+    //   computerPattern
+    // })
 
     let currentColor = playerPattern.length - 1
 
@@ -126,10 +129,18 @@ function App() {
       } else {
         alert("Incorrect! Try again.");
         // Handle end of game or allow retries
-        setPlayerPattern([])
+        quickReset()
       }
     }
   }, [playerPattern])
+
+  function quickReset(){
+    setScore(0)
+    setPlayerPattern([])
+    setComputerPattern([])
+    increaseComputerPattern()
+    switchTurns()
+  }
   
   return (
     <div className="flexer">
@@ -170,7 +181,14 @@ function App() {
         />
        </>
        }
-       <button onClick={switchTurns}>switch</button>
+       {
+        score > 0 
+        ?
+        <br />
+        :
+        <button onClick={switchTurns}>BEGIN</button>
+       }
+       
     </div>
   );
 }
