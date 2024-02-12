@@ -112,10 +112,11 @@ function App() {
   
           switchTurns(); 
         }
+      // Incorrect input
       } else {
-        // Incorrect input
         alert("Incorrect! Try again.");
         // Handle end of game or allow retries
+        setPlayerPattern([])
       }
     }
 
