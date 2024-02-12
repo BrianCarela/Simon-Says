@@ -5,6 +5,9 @@ import CompButton from './CompButton';
 
 function App() {
 
+  // SCORE
+  const [score, setScore] = useState(0)
+
   // TURNS
   const [isPlayerTurn, setIsPlayerTurn] = useState(true);
   const [isComputerTurn, setIsComputerTurn] = useState(false);
@@ -19,13 +22,15 @@ function App() {
 
   // Flip who's turn it is
   function switchTurns(){
-    setIsPlayerTurn((prevState) => {
-      return !prevState;
-    })
-
-    setIsComputerTurn((prevState) => {
-      return !prevState;
-    })
+    setTimeout(() => {
+      setIsPlayerTurn((prevState) => {
+        return !prevState;
+      })
+  
+      setIsComputerTurn((prevState) => {
+        return !prevState;
+      })
+    }, 500)
   }
 
   // DECIDE WHO TAKES THEIR TURN
@@ -33,7 +38,6 @@ function App() {
     if(isComputerTurn){
       computerTakesTurn()
     } else if(isPlayerTurn){
-      // do player logic later
       // check the comp status during player's turn
       console.log(computerPattern)
     }
@@ -65,7 +69,10 @@ function App() {
   }
 
   function glowAll() {
-    setGlowAllActive(true);
+    setTimeout(() => {
+      setGlowAllActive(true);
+    }, 500)
+    
     setTimeout(() => {
       setGlowAllActive(false);
       beginGlowSequence()
@@ -100,18 +107,20 @@ function App() {
 
     // Only do it from first player click and onward
     if(playerPattern.length > 0){
+
       // If this current click matches
       if (playerPattern[currentColor] === computerPattern[currentColor]) {
-        alert('right so far!')
 
         // If the player reaches the end of the patter. computerPattern is always 1 step ahead 🤖
         if (playerPattern.length + 1 === computerPattern.length) {
-          
-          alert("Correct sequence! Now it's the computer's turn.");
-  
+          setScore(score+1)
+
+          // Reset player pattern
           setPlayerPattern([])
-  
-          switchTurns(); 
+
+          setTimeout(() => {
+            switchTurns(); // Computer goes
+          }, 1500)
         }
       // Incorrect input
       } else {
@@ -129,7 +138,7 @@ function App() {
         <PlayerButton color={"red"} onPlayerClick={handlePlayerClick}/>
         <PlayerButton color={"blue"} onPlayerClick={handlePlayerClick}/>
           <div className="scoreBoard">
-            <span className="score">10</span>
+            <span className="score">P:{score}</span>
           </div>
         <PlayerButton color={"green"} onPlayerClick={handlePlayerClick}/>
         <PlayerButton color={"yellow"} onPlayerClick={handlePlayerClick}/>
@@ -147,7 +156,7 @@ function App() {
           glowAll={glowAllActive} 
         />
           <div className="scoreBoard">
-            <span className="score">0</span>
+            <span className="score">C:{score}</span>
           </div>
         <CompButton 
           color="green" 
