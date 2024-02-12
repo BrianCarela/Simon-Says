@@ -1,18 +1,34 @@
 import React, { useState, useEffect } from 'react';
 
-function PlayerButton({color}) {
-    const [light, setLight] = useState("");
+function PlayerButton({
+    color,
+    onPlayerClick
+}) {
+    // Use state to manage the dynamic class for glowing
+    const [glowState, setGlowState] = useState('');
 
-    function lightUp(){
-        setLight(`greenbg`);
-
-        setTimeout(() => {
-            setLight("");
-        }, 1000)
+    // 1 second glow
+    function glowThisLight(){
+        setGlowState(`${color}bg`);
+        // Set a timeout to remove the glow after 1 second
+        const timer = setTimeout(() => {
+            setGlowState('');
+        }, 1000);
+        // Cleanup the timeout if the component unmounts or if shouldGlow changes
+        return () => clearTimeout(timer);
     }
 
+    // Combine the glow effect with the playerPattern
+    function tiedTogether(){
+        // onPlayerClick(color)
+        glowThisLight()
+    }
+    
+    // Combine the base class with the dynamic glowState
+    const classes = `button ${color} ${glowState}`
+
     return (  
-        <div className={`button ${color} ${light}`} onClick={lightUp}></div>
+        <div className={classes} onClick={tiedTogether}></div>
     );
 }
 
