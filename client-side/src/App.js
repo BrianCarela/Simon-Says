@@ -3,11 +3,6 @@ import PlayerButton from './PlayerButton';
 import React, { useState, useEffect } from 'react';
 import CompButton from './CompButton';
 
-/*
-  RECAP
-*/
-// refactoring all the things!!!
-
 function App() {
 
   // TURNS
@@ -88,17 +83,53 @@ function App() {
     }
   }, [isPlayerTurn])
 
+  function handlePlayerClick(color) {
+    // Update playerPattern
+    setPlayerPattern([...playerPattern, color]);
+  }
+
+  // Always check if the player pattern is correct
+  useEffect(() => {
+    console.log({
+      playerPattern,
+      computerPattern
+    })
+
+    let currentColor = playerPattern.length - 1
+
+    if(playerPattern.length > 0){
+      if (playerPattern[currentColor] === computerPattern[currentColor]) {
+        alert('right so far!')
+        if (playerPattern.length + 1 === computerPattern.length) {
+          // Player completed the sequence correctly
+          alert("Correct sequence! Now it's the computer's turn.");
+  
+          setPlayerPattern([])
+  
+          switchTurns(); // Assuming this function can also start the computer's turn
+        }
+      } else {
+        // Incorrect input
+        alert("Incorrect! Try again.");
+        // Handle end of game or allow retries
+      }
+    }
+
+    
+  }, [playerPattern])
+  
+
   return (
     <div className="flexer">
       {isPlayerTurn ?
        <>
-        <PlayerButton color={"red"} />
-        <PlayerButton color={"blue"} />
+        <PlayerButton color={"red"} onPlayerClick={handlePlayerClick}/>
+        <PlayerButton color={"blue"} onPlayerClick={handlePlayerClick}/>
           <div className="scoreBoard">
             <span className="score">10</span>
           </div>
-        <PlayerButton color={"green"} />
-        <PlayerButton color={"yellow"} />
+        <PlayerButton color={"green"} onPlayerClick={handlePlayerClick}/>
+        <PlayerButton color={"yellow"} onPlayerClick={handlePlayerClick}/>
        </>
        :
        <>
