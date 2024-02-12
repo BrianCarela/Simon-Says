@@ -97,16 +97,20 @@ function App() {
 
     let currentColor = playerPattern.length - 1
 
+    // Only do it from first player click and onward
     if(playerPattern.length > 0){
+      // If this current click matches
       if (playerPattern[currentColor] === computerPattern[currentColor]) {
         alert('right so far!')
+
+        // If the player reaches the end of the patter. computerPattern is always 1 step ahead 🤖
         if (playerPattern.length + 1 === computerPattern.length) {
-          // Player completed the sequence correctly
+          
           alert("Correct sequence! Now it's the computer's turn.");
   
           setPlayerPattern([])
   
-          switchTurns(); // Assuming this function can also start the computer's turn
+          switchTurns(); 
         }
       } else {
         // Incorrect input
