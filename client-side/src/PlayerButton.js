@@ -20,8 +20,8 @@ function PlayerButton({
 
     // Combine the glow effect with the playerPattern
     function tiedTogether(){
-        // onPlayerClick(color)
         glowThisLight()
+        onPlayerClick(color)
     }
     
     // Combine the base class with the dynamic glowState
